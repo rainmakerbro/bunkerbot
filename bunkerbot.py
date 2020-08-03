@@ -76,4 +76,4 @@ async def on_message(message):
     if message.content.startswith('.help'):
         await message.channel.send("Ask me to 'add' to add a movie to the list!  To see the list of movies, say 'movies'")
 
-bunkerbot.run('NzMyNzQzMDg0NjU1NTA5NTc5.Xw5CQg.K8KI-ynj1R0A46tXDRW0P67RakU')
+bunkerbot.run(token)
