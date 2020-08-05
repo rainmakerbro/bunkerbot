@@ -77,7 +77,8 @@ async def on_message(message):
         else:
             if msg:
                 watched_cells = sh.sheet1.find(msg.content)
-                sh.sheet1.update(msg.content, '')
+                watched_row = watched_cells.row
+                sh.sheet1.delet_row(watched_row)
                 sh.sheet2.append_row([msg.content])
                 await message.channel.send('added to the watched list!')
 
@@ -86,6 +87,6 @@ async def on_message(message):
         await message.channel.send(values)
 
     if message.content.startswith('.help'):
-        await message.channel.send("Ask me to 'add' to add a movie to the list!  To see the list of movies, say 'movies'")
+        await message.channel.send("Ask me to 'add' to add a movie to the list!  To see the list of movies, say 'movies', or tell me you 'watched' a movie to remove the clutter!")
 
 bunkerbot.run(bunker_token)
