@@ -78,7 +78,7 @@ async def on_message(message):
             if msg:
                 watched_cells = sh.sheet1.find(msg.content)
                 watched_row = watched_cells.row
-                sh.sheet1.delet_row(watched_row)
+                sh.sheet1.delete_row(watched_row)
                 sh.sheet2.append_row([msg.content])
                 await message.channel.send('added to the watched list!')
 
