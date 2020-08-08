@@ -12,6 +12,9 @@ gc = gspread.service_account(filename = 'C:/Users/Nate/bunker/client_secret.json
 
 sh = gc.open("bunkerbot's movielist")
 
+worksheet_list = sh.worksheets()
+print(worksheet_list)
+
 # Logging of info into console.  Later on we should output this to a file.
 logging.basicConfig(level=logging.INFO)
 
