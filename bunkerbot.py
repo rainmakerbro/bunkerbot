@@ -11,7 +11,7 @@ import gspread
 gc = gspread.service_account(filename = 'C:/Users/Nate/bunker/client_secret.json')
 
 sh = gc.open("bunkerbot's movielist")
-#sh2 = sh.get_worksheet(30204498)
+sh2 = sh.worksheet('Sheet2')
 
 
 # Logging of info into console.  Later on we should output this to a file.
@@ -48,7 +48,7 @@ async def on_message(message):
                 sh.sheet1.append_row([msg.content])
                 await message.channel.send('added to the list!')
 
-    """if message.content.startswith('.remove'):
+    if message.content.startswith('.remove'):
         await message.channel.send('Which movie would you like to remove?')
         def pred(m):
             return m.author == message.author and m.channel == message.channel
@@ -60,9 +60,12 @@ async def on_message(message):
             await message.channel.send('You took too long...')
         else:
             if msg:
+                watched_cells = sh.sheet1.find(msg.content)
+                watched_row = watched_cells.row
+                sh.sheet1.delete_rows(watched_row)
                 await message.channel.send('removed from the list!')
             else:
-                await message.channel.send("Sorry, I'm not seeing that one, check your spelling and try again!")"""
+                await message.channel.send("Sorry, I'm not seeing that one, check your spelling and try again!")
 
     if message.content.startswith('.watched'):
         await message.channel.send('Which movie did you watch?')
@@ -74,13 +77,14 @@ async def on_message(message):
 
         except asyncio.TimeoutError:
             await message.channel.send('My "watched" command timed out, try calling the movie list first so you can copy/paste titles!')
+        except gspread.exceptions.CellNotFound:
+            await message.channel.send("Sorry I'm not seeing that movie, try calling the list first so you can copy/pase the title you watched!")
         else:
             if msg:
-                watched_cells = sh.sheet1.findall(msg.content)
-                print(watched_cells)
-                #watched_row = watched_cells.value
-                #sh.sheet1.delete_rows(watched_row)
-                #sh.sh2.append_row([msg.content])
+                watched_cells = sh.sheet1.find(msg.content)
+                watched_row = watched_cells.row
+                sh.sheet1.delete_rows(watched_row)
+                sh2.append_row([msg.content])
                 await message.channel.send('added to the watched list!')
 
     if message.content.startswith('.movies'):
