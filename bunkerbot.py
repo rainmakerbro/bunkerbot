@@ -46,7 +46,7 @@ async def on_message(message):
         else:
             if msg:
                 sh.sheet1.append_row([msg.content])
-                await message.channel.send('added to the list!')
+                await msg.add_reaction('✔️')
 
     if message.content.startswith('.remove'):
         await message.channel.send('Which movie would you like to remove?')
@@ -63,7 +63,7 @@ async def on_message(message):
                 watched_cells = sh.sheet1.find(msg.content)
                 watched_row = watched_cells.row
                 sh.sheet1.delete_rows(watched_row)
-                await message.channel.send('removed from the list!')
+                await msg.add_reaction('✔️')
             else:
                 await message.channel.send("Sorry, I'm not seeing that one, check your spelling and try again!")
 
@@ -85,7 +85,8 @@ async def on_message(message):
                 watched_row = watched_cells.row
                 sh.sheet1.delete_rows(watched_row)
                 sh2.append_row([msg.content])
-                await message.channel.send('added to the watched list!')
+                await msg.add_reaction('✔️')
+                await msg.add_reaction('👀')
 
     if message.content.startswith('.movies'):
         values = '\n '.join(map(str, (sh.sheet1.col_values(1))))
