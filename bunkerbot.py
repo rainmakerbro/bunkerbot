@@ -76,7 +76,7 @@ async def on_message(message):
             msg = await bunkerbot.wait_for('message', check=pred, timeout=30.0)
 
         except asyncio.TimeoutError:
-            await message.channel.send('My "watched" command timed out, try calling the movie list first so you can copy/paste titles!')
+            await message.channel.send('My "watched" command timed out, try calling the movie list first so you can copy/paste the title!')
         except gspread.exceptions.CellNotFound:
             await message.channel.send("Sorry I'm not seeing that movie, try calling the list first so you can copy/pase the title you watched!")
         else:
