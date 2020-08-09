@@ -11,9 +11,8 @@ import gspread
 gc = gspread.service_account(filename = 'C:/Users/Nate/bunker/client_secret.json')
 
 sh = gc.open("bunkerbot's movielist")
+#sh2 = sh.get_worksheet(30204498)
 
-worksheet_list = sh.worksheets()
-print(worksheet_list)
 
 # Logging of info into console.  Later on we should output this to a file.
 logging.basicConfig(level=logging.INFO)
@@ -22,8 +21,6 @@ logging.basicConfig(level=logging.INFO)
 bunkerbot = commands.Bot(command_prefix= '.')
 bunker_token = os.environ.get('BUNKER_TOKEN')
 
-# Start of sheet control for adding movies to movielist
-add_to_spot = 0
 
 @bunkerbot.event
 async def on_ready():
@@ -79,10 +76,11 @@ async def on_message(message):
             await message.channel.send('My "watched" command timed out, try calling the movie list first so you can copy/paste titles!')
         else:
             if msg:
-                watched_cells = sh.sheet1.find(msg.content)
-                watched_row = watched_cells.row
-                sh.sheet1.delete_rows(watched_row)
-                sh.sheet2.append_row([msg.content])
+                watched_cells = sh.sheet1.findall(msg.content)
+                print(watched_cells)
+                #watched_row = watched_cells.value
+                #sh.sheet1.delete_rows(watched_row)
+                #sh.sh2.append_row([msg.content])
                 await message.channel.send('added to the watched list!')
 
     if message.content.startswith('.movies'):
