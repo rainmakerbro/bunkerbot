@@ -92,6 +92,6 @@ async def on_message(message):
         await message.channel.send(values)
 
     if message.content.startswith('.help'):
-        await message.channel.send("Ask me to 'add' to add a movie to the list!  To see the list of movies, say 'movies', or tell me you 'watched' a movie to remove the clutter!")
+        await message.channel.send("Ask me to '.add' to add a movie to the list!  To see the list of movies, say '.movies', or tell me you '.watched' a movie to clear your backlog!  If you need to '.remove' a title that we don't want on the list, we do that too!")
 
 bunkerbot.run(bunker_token)
