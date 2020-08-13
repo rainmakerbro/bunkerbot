@@ -5,10 +5,18 @@ import logging
 import asyncio
 import os
 
+# configparser for reading machine specific path and key variables
+import configparser
+
+config = configparser.ConfigParser()
+config.read('keeperfile.ini')
+config.sections()
+bunker_token = config['SPECIFIC VALUES']['APIKey']
+clientsecretloc = config['SPECIFIC VALUES']['clientSecretLoc']
 # Gspread for interacting with Google Sheets
 import gspread
 
-gc = gspread.service_account(filename = 'C:/Users/Nate/bunker/client_secret.json')
+gc = gspread.service_account(filename = clientsecretloc)
 
 sh = gc.open("bunkerbot's movielist")
 sh2 = sh.worksheet('Sheet2')
@@ -19,7 +27,7 @@ logging.basicConfig(level=logging.INFO)
 
 # The bot's name(used for commands and events) and command prefix
 bunkerbot = commands.Bot(command_prefix= '.')
-bunker_token = os.environ.get('BUNKER_TOKEN')
+#bunker_token = os.environ.get('BUNKER_TOKEN')
 
 
 @bunkerbot.event
@@ -46,7 +54,8 @@ async def on_message(message):
         else:
             if msg:
                 sh.sheet1.append_row([msg.content])
-                await msg.add_reaction('✔️')
+                await msg.add_reaction('\U00002705')
+                await msg.add_reaction('\U0001F9E7')
 
     if message.content.startswith('.remove'):
         await message.channel.send('Which movie would you like to remove?')
@@ -63,7 +72,8 @@ async def on_message(message):
                 watched_cells = sh.sheet1.find(msg.content)
                 watched_row = watched_cells.row
                 sh.sheet1.delete_rows(watched_row)
-                await msg.add_reaction('✔️')
+                await msg.add_reaction('\U00002705')
+                await msg.add_reaction('\U0001F6BD')
             else:
                 await message.channel.send("Sorry, I'm not seeing that one, check your spelling and try again!")
 
@@ -85,8 +95,8 @@ async def on_message(message):
                 watched_row = watched_cells.row
                 sh.sheet1.delete_rows(watched_row)
                 sh2.append_row([msg.content])
-                await msg.add_reaction('✔️')
-                await msg.add_reaction('👀')
+                await msg.add_reaction('\U00002705')
+                await msg.add_reaction('\U0001F440')
 
     if message.content.startswith('.movies'):
         values = '\n '.join(map(str, (sh.sheet1.col_values(1))))
