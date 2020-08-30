@@ -108,10 +108,25 @@ async def _remove(ctx, *args):
         return
 
     remove_item = ' '.join(args)
-    watched_cells = sh.sheet1.find(remove_item)
+    worksheets = [shmovies, shgames, shbooks]
+    for item in worksheets:
+        watched_cells = worksheets.find(remove_item)
+    #remove_item = ' '.join(args)
+    #watched_cells = sh.sheet1.find(remove_item)
     watched_row = watched_cells.row
     sh.sheet1.delete_rows(watched_row)
     await msg.add_reaction('\U00002705')
     await msg.add_reaction('\U0001F6BD')
+
+@bunkerbot.command()
+async def help(ctx):
+    if ctx.author == bunkerbot.user:
+        return
+
+    ctx.author.send('''Available Functions:\n
+         Add item(.add, .new):\n
+            Call command and add your preferred type of item e.g ".add (movie, book, game)" \n
+        Remove Item(.remove ):\n
+            Call command and title you wish to remove (currently only works for movies)''')
 
 bunkerbot.run(bunker_token)
